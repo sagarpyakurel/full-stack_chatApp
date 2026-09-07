@@ -4,6 +4,7 @@ WORKDIR /app
 COPY package*.json ./
 RUN npm install
 COPY . .
+ENV NODE_ENV=production
 RUN npm run build
 
 # Production stage
@@ -16,6 +17,7 @@ RUN mkdir -p /var/cache/nginx /var/run /var/log/nginx && \
 # Copy built files and configuration
 COPY --from=build /app/dist /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
+
 
 # Set proper ownership for web files
 RUN chown -R nginx:nginx /usr/share/nginx/html
